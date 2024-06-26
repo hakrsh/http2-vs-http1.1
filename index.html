@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+<table id="img" border="0" cellpadding="1" cellspacing="0"></table>
+<div id="renderTime"></div> <!-- Element to display render time -->
+
+<script>
+// Record the start time
+const startTime = performance.now();
+
+const table = document.getElementById("img");
+const renderTimeElement = document.getElementById("renderTime");
+
+let loadedImages = 0;
+const totalImages = 100;
+
+for (let row = 1; row <= 10; row++) {
+    const tr = document.createElement("tr");
+
+    for (let col = 1; col <= 10; col++) {
+        const td = document.createElement("td");
+        const img = document.createElement("img");
+        img.src = `img/scott_${row.toString().padStart(2, '0')}_${col.toString().padStart(2, '0')}.png`;
+
+        // Add an event listener to track when the image has loaded
+        img.onload = () => {
+            loadedImages++;
+            if (loadedImages === totalImages) {
+                const endTime = performance.now();
+                const totalTime = (endTime - startTime)/1000;
+                renderTimeElement.textContent = `Total time taken to render the page: ${totalTime.toFixed(2)} seconds`;
+            }
+        };
+
+        td.appendChild(img);
+        tr.appendChild(td);
+    }
+    table.appendChild(tr);
+}
+</script>
+
+</body>
+</html>
